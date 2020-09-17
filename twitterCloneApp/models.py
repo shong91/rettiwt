@@ -46,3 +46,14 @@ class TwTweet(models.Model):
 
 
 
+class TwAct(models.Model):
+    TW_ACT_SNO = models.IntegerField()	
+    USER_ID = models.CharField(max_length=30)
+    RT_USER_ID = models.CharField(max_length=30)
+    QT_USER_ID = models.CharField(max_length= 30)
+    LIKE_USER_ID = models.CharField(max_length= 30)
+    DATA_DEL_YN = models.CharField(max_length= 1)
+    FRT_USER_ID = models.CharField(max_length= 30)
+    FRT_REG_DATE = models.DateTimeField(auto_now_add=True)
+    LAST_USER_ID = models.CharField(max_length= 30)
+    LAST_CHG_DATE = models.DateTimeField(auto_now=True)
