@@ -13,6 +13,36 @@ class TwUser(models.Model):
     USER_PROF_BIO = models.CharField(max_length=500)
     DATA_DEL_YN = models.CharField(max_length=1)
     FRT_USER_ID = models.CharField(max_length=30)
-    FRT_REG_DATE = models.DateTimeField(max_length=8)
+    FRT_REG_DATE = models.DateTimeField(auto_now_add=True)
     LAST_USER_ID = models.CharField(max_length=30)
-    LAST_CHG_DATE = models.DateTimeField(max_length=8)
+    LAST_CHG_DATE = models.DateTimeField(auto_now=True)
+
+
+
+class TwFollowUser(models.Model):
+    FOLLOW_SNO = models.IntegerField()
+    USER_ID = models.CharField(max_length=30)
+    FOLLOWING_USER_ID = models.CharField(max_length=30)
+    FOLLOWER_USER_ID = models.CharField(max_length=30)
+    DATA_DEL_YN = models.CharField(max_length=1)
+    FRT_USER_ID = models.CharField(max_length=30)
+    FRT_REG_DATE = models.DateTimeField(auto_now_add=True)
+    LAST_USER_ID = models.CharField(max_length=30)
+    LAST_CHG_DATE = models.DateTimeField(auto_now=True)
+
+
+class TwTweet(models.Model):
+    TW_SNO = models.IntegerField()
+    TW_PSNO = models.CharField(max_length=10)
+    USER_ID = models.CharField(max_length=30)
+    TW_CONTENT = models.CharField(max_length=500)
+    TW_IMAGE_URL = models.CharField(max_length=500)
+    TW_GIF_URL = models.CharField(max_length=500)
+    DATA_DEL_YN = models.CharField(max_length=1)
+    FRT_USER_ID = models.CharField(max_length=30)
+    FRT_REG_DATE = models.DateTimeField(auto_now_add=True)
+    LAST_USER_ID = models.CharField(max_length=30)
+    LAST_CHG_DATE = models.DateTimeField(auto_now=True)
+
+
+
