@@ -130,3 +130,5 @@ AUTHENTICATION_BACKENDS = [
     # 'twitterCloneApp.models.UserBackend'
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+AUTH_USER_MODEL = 'authTest.User'

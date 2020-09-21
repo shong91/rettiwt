@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from twitterCloneApp.models import TwUser, TwTweet, UserBackend
+from twitterCloneApp.models import TwUser, TwTweet
 from twitterCloneApp.forms import TwJoinForm, TwLoginForm
 from django.db.models import Count, Avg
-from django.contrib.auth import login
 
 
 # Create your views here.
