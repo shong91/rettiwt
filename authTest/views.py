@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from authTest.models import User
 from django.contrib.auth import authenticate, login
 from authTest.forms import UserForm, LoginForm
 from django.http import HttpResponse
@@ -13,12 +14,11 @@ def main(request):
 
 def join(request):
     if request.method == 'POST':
-        print('hello 1')
         form = UserForm(request.POST)
+        print(form)
         if form.is_valid():
-            print('hello 2')
             new_user = User.objects.create_user(**form.cleaned_data)
-            login(request, new_user)
+            # login(request, new_user)
             return redirect('auth:main')
     else:
         form = UserForm()
@@ -30,9 +30,6 @@ def user_login(request):
         form = LoginForm(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        print(username, password)
-        print(form)
-        print(form.is_valid())
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
