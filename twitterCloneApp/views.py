@@ -4,19 +4,21 @@ from twitterCloneApp.forms import TwJoinForm, TwLoginForm
 from django.db.models import Count, Avg
 from django.contrib.auth import login
 
+
 # Create your views here.
 def main(request):
     context = {}
-    return render(request, 'main.html', context)
+    return render(request, 'twc/main.html', context)
 
 
 def join(request):
     if request.method == 'GET':
         join_form = TwJoinForm()
-        return render(request, 'join.html', {'form': join_form})
+        return render(request, 'twc/join.html', {'form': join_form})
     elif request.method == 'POST':
         join_form = TwJoinForm(request.POST)
         if join_form.is_valid():
+            print(join_form)
             new_user = TwUser.objects.create_user(**join_form.cleaned_data)
             print('pwd 1: ', new_user.user_pwd)
 
@@ -28,7 +30,7 @@ def join(request):
 def user_login(request):
     if request.method == 'GET':
         login_form = TwLoginForm()
-        return render(request, 'login.html', {'form': login_form})
+        return render(request, 'twc/login.html', {'form': login_form})
     elif request.method == 'POST':
         login_form = TwLoginForm(request.POST)
         user_id = request.POST['user_id']

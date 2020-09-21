@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'twitterCloneApp'
+    'twitterCloneApp',
+    'authTest',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 LOGIN_REDIRECT_URL = 'main'
 
 AUTHENTICATION_BACKENDS = [
-    'twitterCloneApp.models.UserBackend'
+    # 'twitterCloneApp.models.UserBackend'
     'django.contrib.auth.backends.ModelBackend',
 ]
