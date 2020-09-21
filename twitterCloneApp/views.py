@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from twitterCloneApp.models import TwUser, TwTweet
+from twitterCloneApp.models import TwUser, TwTweet, UserBackend
 from twitterCloneApp.forms import TwJoinForm, TwLoginForm
 from django.db.models import Count, Avg
-from django.contrib.auth import authenticate, login
-
+from django.contrib.auth import login
 
 # Create your views here.
 def main(request):
@@ -12,28 +11,35 @@ def main(request):
 
 
 def join(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        join_form = TwJoinForm()
+        return render(request, 'join.html', {'form': join_form})
+    elif request.method == 'POST':
         join_form = TwJoinForm(request.POST)
         if join_form.is_valid():
-            new_item = join_form.save()
+            new_user = TwUser.objects.create_user(**join_form.cleaned_data)
+            print('pwd 1: ', new_user.user_pwd)
+
+            new_user.save()
+            print('pwd 2: ', new_user.user_pwd)
             return redirect('main')
-    # pass
-    join_form = TwJoinForm()
-    return render(request, 'join.html', {'form': join_form})
 
 
 def user_login(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        login_form = TwLoginForm()
+        return render(request, 'login.html', {'form': login_form})
+    elif request.method == 'POST':
         login_form = TwLoginForm(request.POST)
-        username = request.POST['user_id']
-        password = request.POST['user_pwd']
-        print(request.POST)
-        user = authenticate(username=username, password=password)
-        print("1", user)
+        user_id = request.POST['user_id']
+        user_pwd = request.POST['user_pwd']
+        user = TwUser.objects.get(user_id=user_id)
+        print(1, user)
         if user is not None:
-        # if login_form.is_valid():
-            login(request, user)
-            print("2", user)
+            # login(request, user)
+            print(2, user)
             return redirect('main')
-    login_form = TwLoginForm()
-    return render(request, 'login.html', {'form': login_form})
+        return redirect('login')
+
+        # userbackend = UserBackend()
+        # user = userbackend.authenticate(user_id=user_id, user_pwd=user_pwd)
