@@ -126,9 +126,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 LOGIN_REDIRECT_URL = 'main'
 
+AUTH_USER_MODEL = 'authTest.User'
+
 AUTHENTICATION_BACKENDS = [
-    # 'twitterCloneApp.models.UserBackend'
+    'authTest.MyBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AUTH_USER_MODEL = 'authTest.User'
+
+

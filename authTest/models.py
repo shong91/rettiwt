@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.contrib.auth.hashers import (
+    check_password, is_password_usable, make_password,
+)
 
 
 class UserManager(BaseUserManager):
@@ -9,13 +12,19 @@ class UserManager(BaseUserManager):
     def create_user(self, user_id, user_nm, user_email, user_pwd=None):
         if not user_id:
             raise ValueError('Must have user id')
+
+        user_email = self.normalize_email(user_email)
+
         user = self.model(
             user_id=user_id,
             user_nm=user_nm,
             user_email=user_email,
-            user_pwd=user_pwd
+            user_pwd=make_password(user_pwd)
         )
-        user.set_password(user_pwd)
+
+        # user.set_password(user_pwd)
+        print(user)
+        print(user.user_pwd)
         user.save(using=self._db)
 
         return user
@@ -50,5 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
+    # 커스텀 User model 의 unique identifier
     USERNAME_FIELD = 'user_id'
-    REQUIRED_FIELDS = ['user_email']
+    REQUIRED_FIELDS = ['user_email'] # python manage.py superuser 로 관리자계정 생성 시 필요한 필드들 명시시
+

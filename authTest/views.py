@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 # from django.contrib.auth.models import User
 from authTest.models import User
-from django.contrib.auth import authenticate, login
+from authTest.mybackends import MyBackend
+# from django.contrib.auth import authenticate, login
 from authTest.forms import UserForm, LoginForm
 from django.http import HttpResponse
 
@@ -18,7 +19,6 @@ def join(request):
         print(form)
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
-            # login(request, new_user)
             return redirect('auth:main')
     else:
         form = UserForm()
@@ -26,13 +26,17 @@ def join(request):
 
 
 def user_login(request):
+    mybackend = MyBackend()
     if request.method == 'POST':
         form = LoginForm(request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user_id = request.POST['user_id']
+        user_pwd = request.POST['user_pwd']
+        user = mybackend.authenticate(request, user_id, user_pwd)
+        print('1', user)
         if user is not None:
-            login(request, user)
+            mybackend.get_user(user_id)
+            print('2', user)
+            # login(request, user)
             return redirect('auth:main')
         else:
             return redirect('auth:login')
