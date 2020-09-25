@@ -64,3 +64,4 @@ class TwAct(models.Model):
 # 모델 생성/수정 후 마이그레이션
 # python manage.py makemigrations (appname)
 # python manage.py migrate
+# python manage.py dbshell
