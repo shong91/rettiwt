@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from twitterCloneApp.models import TwUser, TwTweet
+from twitterCloneApp.authmodel import TwUser
+from twitterCloneApp.mybackends import MyBackend
+from twitterCloneApp.models import TwTweet
 from twitterCloneApp.forms import TwJoinForm, TwLoginForm
 from django.db.models import Count, Avg
+
+mybackend = MyBackend()
 
 
 # Create your views here.
@@ -17,13 +21,9 @@ def join(request):
     elif request.method == 'POST':
         join_form = TwJoinForm(request.POST)
         if join_form.is_valid():
-            print(join_form)
             new_user = TwUser.objects.create_user(**join_form.cleaned_data)
-            print('pwd 1: ', new_user.user_pwd)
-
-            new_user.save()
-            print('pwd 2: ', new_user.user_pwd)
-            return redirect('main')
+            print(new_user.user_pwd)
+            return redirect('twc:main')
 
 
 def user_login(request):
@@ -34,13 +34,11 @@ def user_login(request):
         login_form = TwLoginForm(request.POST)
         user_id = request.POST['user_id']
         user_pwd = request.POST['user_pwd']
-        user = TwUser.objects.get(user_id=user_id)
-        print(1, user)
-        if user is not None:
-            # login(request, user)
-            print(2, user)
-            return redirect('main')
-        return redirect('login')
-
-        # userbackend = UserBackend()
-        # user = userbackend.authenticate(user_id=user_id, user_pwd=user_pwd)
+        user = mybackend.authenticate(request, user_id, user_pwd)
+        if user is not None:     # 로그인 성공
+            mybackend.get_user(user_id)
+            print('로그인 성공')
+            return redirect('twc:main')
+        else:    # 로그인 실패
+            print('로그인 실패')
+            return redirect('twc:login')

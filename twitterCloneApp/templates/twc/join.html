@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <form action="{% url 'join' %}" method="POST">
+    <form action="{% url 'twc:join' %}" method="POST">
         {% csrf_token %}
         <table>
             {{ form.as_table }}

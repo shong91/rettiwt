@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from twitterCloneApp.authmodel import TwUser
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.hashers import (
+    check_password, is_password_usable, make_password
+)
 error_messages = {
     'user_id': _('아이디는 최대 30자로 설정 가능합니다. ')
     , 'user_nm': _('이름은 최대 15자로 설정 가능합니다.  ')
@@ -14,28 +19,6 @@ help_text = {
     , 'user_email': _('이메일 주소를 입력해주세요. ')
     , 'user_pwd': _('비밀번호를 입력해주세요. ')
 }
-
-# Create your models here.
-# null=True 를 설정하지 않을 경우, 디폴트로 not null 임.
-# Foreign key 설정 시 related_name 옵션에 대하여:
-# (Reference) https://velog.io/@brighten_the_way/Django%EC%99%80-Reverse-relations%EA%B3%BC-Relatedname
-class TwUser(models.Model):
-    user_id = models.CharField(max_length=30, help_text=help_text.get('user_id'), error_messages=error_messages)
-    user_nm = models.CharField(max_length=45, help_text=help_text.get('user_nm'), error_messages=error_messages)
-    user_email = models.CharField(max_length=100, help_text=help_text.get('user_email'), error_messages=error_messages)
-    user_telno = models.CharField(max_length=12, default=None, null=True)
-    user_birthday = models.CharField(max_length=8)
-    user_pwd = models.CharField(max_length=128, help_text=help_text.get('user_pwd'), error_messages=error_messages)
-    user_auth_yn = models.CharField(max_length=1, default="N")
-    user_acc_pub_yn = models.CharField(max_length=1, default="Y")
-    user_prof_pic = models.CharField(max_length=500)
-    user_prof_bio = models.CharField(max_length=500)
-    data_del_yn = models.CharField(max_length=1, default="N")
-    frt_user_id = models.CharField(max_length=30)
-    frt_reg_date = models.DateTimeField(auto_now_add=True)
-    last_user_id = models.CharField(max_length=30)
-    last_chg_date = models.DateTimeField(auto_now=True)
-
 
 
 class TwFollowUser(models.Model):
@@ -79,5 +62,5 @@ class TwAct(models.Model):
 
 
 # 모델 생성/수정 후 마이그레이션
-# python manage.py makemigrations
+# python manage.py makemigrations (appname)
 # python manage.py migrate

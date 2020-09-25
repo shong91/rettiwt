@@ -1,11 +1,12 @@
 from django import forms
 from django.forms import ModelForm
-from twitterCloneApp.models import TwUser
+from twitterCloneApp.authmodel import TwUser
 from django.utils.translation import gettext_lazy as _
 
 
 class TwJoinForm(ModelForm):
     class Meta:
+
         model = TwUser
         fields = ['user_id', 'user_nm', 'user_email', 'user_pwd']
         labels = {
@@ -34,6 +35,7 @@ class TwJoinForm(ModelForm):
 
 class TwLoginForm(ModelForm):
     class Meta:
+
         model = TwUser
         fields = ['user_id', 'user_pwd']
         labels = {
