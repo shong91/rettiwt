@@ -52,7 +52,6 @@ class TwUser(AbstractBaseUser, PermissionsMixin):
 
     user_telno = models.CharField(max_length=12, default=None, null=True)
     user_birthday = models.CharField(max_length=8)
-    user_auth_yn = models.CharField(max_length=1, default="N")
     user_acc_pub_yn = models.CharField(max_length=1, default="Y")
     user_prof_pic = models.CharField(max_length=500)
     user_prof_bio = models.CharField(max_length=500)
@@ -73,4 +72,5 @@ class TwUser(AbstractBaseUser, PermissionsMixin):
 
     # 커스텀 User model 의 unique identifier
     USERNAME_FIELD = 'user_id'
-    REQUIRED_FIELDS = ['user_email']  # python manage.py superuser 로 관리자계정 생성 시 필요한 필드들 명시시
+    PASSWORD_FIELD = 'user_pwd'
+    REQUIRED_FIELDS = ['user_nm', 'user_email']  # python manage.py superuser 로 관리자계정 생성 시 필요한 필드들 명시시
