@@ -125,12 +125,20 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 LOGIN_REDIRECT_URL = 'main'
 
+# login user authentication setting
 AUTH_USER_MODEL = 'twitterCloneApp.TwUser'
-
 AUTHENTICATION_BACKENDS = [
     'twitterCloneApp.MyBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-SILENCED_SYSTEM_CHECKS = ["auth.W004"]
+# SILENCED_SYSTEM_CHECKS = ["auth.W004"]
+
+# email authentication setting
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_POST = '587'
+EMAIL_HOST_USER = 'marketintaste@gmail.com'
+EMAIL_HOST_PASSWORD = 'mintproject1'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
