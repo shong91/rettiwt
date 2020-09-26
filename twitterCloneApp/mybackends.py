@@ -10,14 +10,11 @@ class MyBackend(BaseBackend):
     def authenticate(self, request, user_id=None, user_pwd=None): #**kwargs
         try:
             user = TwUser.objects.get(user_id=user_id)
-            if check_password(user_pwd, user.user_pwd):
-                print('로그인 인증 성공')
+            if check_password(user_pwd, user.user_pwd):     # 로그인 인증 성공
                 return user
-            else:
-                print('비밀번호 오류')
+            else:                                           # 비밀번호 오류
                 return None
-        except ObjectDoesNotExist:
-            print('해당 아이디 없음')
+        except ObjectDoesNotExist:                          # 해당 아이디 없음
             return None
 
     def get_user(self, user_id):

@@ -36,9 +36,9 @@ def join(request):
             current_site = get_current_site(request)
             message = render_to_string('twc/activation_email.html', {
                 'user': user,
-                'domain': current_site.domain,
+                'domain': current_site.domain, # 127.0.0.1:8000
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_active_token.make_token(user)
+                'token': account_active_token.make_token(user) # 토큰값 생성
             })
 
             mail_title = '회원가입 인증 메일'
@@ -58,10 +58,10 @@ def user_login(request):
         user_id = request.POST['user_id']
         user_pwd = request.POST['user_pwd']
         user = mybackend.authenticate(request, user_id, user_pwd)
-        if user is not None:     # 로그인 성공
+        if user is not None and user.is_active:     # 로그인 인증 & 이메일 인증 완료 -> 로그인 성공
             mybackend.get_user(user_id)
             return redirect('twc:main')
-        else:    # 로그인 실패
+        else:                                        # 로그인 실패
             return redirect('twc:login')
 
 
@@ -73,7 +73,7 @@ def activate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError): # TwUser.DoesNotExist
         user = None
 
-    if user is not None and account_active_token.check_token(user, token):
+    if user is not None and account_active_token.check_token(user, token):       # 토큰값 일치 여부 확인
         user.is_active = True
         user.save()
         mybackend.get_user(user.user_id)
