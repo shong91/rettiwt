@@ -37,8 +37,6 @@ def user_login(request):
         user = mybackend.authenticate(request, user_id, user_pwd)
         if user is not None:     # 로그인 성공
             mybackend.get_user(user_id)
-            print('로그인 성공')
             return redirect('twc:main')
         else:    # 로그인 실패
-            print('로그인 실패')
             return redirect('twc:login')
