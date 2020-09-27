@@ -35,17 +35,23 @@ class TwFollowUser(models.Model):
 
 
 class TwTweet(models.Model):
-    tw_sno = models.IntegerField()
-    tw_psno = models.IntegerField()
+    # tw_sno = models.IntegerField() # id가 있는데 이게 필요할까?
+    tw_psno = models.IntegerField(null=True)
+
+    # FK 가 user_id 가 아니라 user_id_id 로 잡히는데 이렇게 하는 게 맞는건지..?
     user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwTweet_user_id", error_messages=None)
     tw_content = models.CharField(max_length=500)
     tw_image_url = models.CharField(max_length=500, default=None, null=True)
     tw_gif_url = models.CharField(max_length=500, default=None, null=True)
+
+    # 공통컬럼
     data_del_yn = models.CharField(max_length=1, default="N")
     frt_user_id = models.CharField(max_length=30)
-    frt_reg_date = models.DateTimeField(auto_now_add=True)
+    # date_joined으로 대체: frt_reg_date = models.DateTimeField(auto_now_add=True)
     last_user_id = models.CharField(max_length=30)
     last_chg_date = models.DateTimeField(auto_now=True)
+
+    REQUIRED_FIELDS = ['user_id', 'tw_content']
 
 
 class TwAct(models.Model):

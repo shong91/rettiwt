@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from twitterCloneApp.token import account_active_token
-from twitterCloneApp.forms import TwJoinForm, TwLoginForm
+from twitterCloneApp.forms import TwJoinForm, TwLoginForm, TwTweetForm
 from django.db.models import Count, Avg
 from twitterCloneApp.models import TwTweet
 
@@ -61,6 +61,7 @@ def user_login(request):
         user = mybackend.authenticate(request, user_id, user_pwd)
         if user is not None and user.is_active:     # 로그인 인증 & 이메일 인증 완료 -> 로그인 성공
             mybackend.get_user(user_id)
+            request.session['id'] = user.id
             request.session['user_id'] = user_id
             return redirect('twc:home')
         else:                                        # 로그인 실패
@@ -79,6 +80,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         mybackend.get_user(user.user_id)
+        request.session['id'] = user.id
         request.session['user_id'] = user.user_id
         return redirect('twc:home')
 
@@ -93,4 +95,13 @@ def get_list(request):
 
 
 def tweet(request):
+    if request.method == 'GET':
+        form = TwTweetForm()
+        return render(request, 'twc/tweet.html', {'form': form})
+    elif request.method == 'POST':
+        form = TwTweetForm(request.POST)
+        if form.is_valid():
+            print(form)
+            form.save(commit=True)
+            return redirect('twc:home')
     return

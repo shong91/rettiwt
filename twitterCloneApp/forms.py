@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from twitterCloneApp.authmodel import TwUser
+from twitterCloneApp.models import TwTweet
 from django.utils.translation import gettext_lazy as _
 
 
@@ -53,3 +54,17 @@ class TwLoginForm(ModelForm):
         #     'user_id': _('아이디는 최대 30자로 설정 가능합니다. ')
         #     , 'user_pwd': _('비밀번호를 입력해주세요. ')
         # }
+
+
+class TwTweetForm(ModelForm):
+    class Meta:
+        model = TwTweet
+        fields = ['user_id', 'tw_content']
+        labels = {
+            'tw_content': _('내용')
+            , 'tw_image_url': _('이미지 url')
+            , 'tw_image_url': _('gif 이미지 url')
+        }
+        widgets = {
+            'user_id': forms.HiddenInput()
+        }
