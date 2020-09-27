@@ -18,6 +18,7 @@ mybackend = MyBackend()
 
 # Create your views here.
 def main(request):
+    print(request.session.get('user_id'))
     context = {}
     return render(request, 'twc/main.html', context)
 
@@ -60,7 +61,8 @@ def user_login(request):
         user = mybackend.authenticate(request, user_id, user_pwd)
         if user is not None and user.is_active:     # 로그인 인증 & 이메일 인증 완료 -> 로그인 성공
             mybackend.get_user(user_id)
-            return redirect('twc:main')
+            request.session['user_id'] = user_id
+            return redirect('twc:home')
         else:                                        # 로그인 실패
             return redirect('twc:login')
 
@@ -77,8 +79,18 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         mybackend.get_user(user.user_id)
-        return redirect('twc:main')
+        request.session['user_id'] = user.user_id
+        return redirect('twc:home')
 
     else:
         return render(request, 'twc/main.html', {'error': '계정 활성화 오류'})
+    return
+
+
+def get_list(request):
+    list = {}
+    return render(request, 'twc/home.html', list)
+
+
+def tweet(request):
     return

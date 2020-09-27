@@ -1,0 +1,19 @@
+{% extends 'twc/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<header></header>
+
+<section class="">
+    get list
+    {% for tweet in list %}
+        {{ tweet }}
+    {% endfor %}
+</section>
+<article class="">
+    <div> trends for you </div>
+</article>
+<footer class=""></footer>
+
+{% endblock %}
