@@ -10,8 +10,7 @@
         <button type="submit" class="btn btn-primary"> 글쓰기 </button>
     </form>
 </div>
-{{ request.session.user_id }}
-{{ request.session.id }}
+
 <script>
     let user_id = document.getElementById('{{ form.user_id.id_for_label }}')
     user_id.value = '{{ request.session.id}}'
