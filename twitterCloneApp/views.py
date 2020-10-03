@@ -12,6 +12,7 @@ from twitterCloneApp.token import account_active_token
 from twitterCloneApp.forms import TwJoinForm, TwLoginForm, TwTweetForm
 from django.db.models import Count, Avg
 from twitterCloneApp.models import TwTweet
+# ====================================================================================================================================
 
 mybackend = MyBackend()
 
@@ -89,9 +90,19 @@ def activate(request, uidb64, token):
     return
 
 
-def get_list(request):
-    list = {}
-    return render(request, 'twc/home.html', list)
+def logout(request):
+    del request.session['id']
+    del request.session['user_id']
+    request.session.modified = True # depending on settings
+    return redirect('twc:main')
+
+
+# tweet CRUD ======================================================================================================
+def list(request):
+    # user_id = request.session.get('user_id')
+    id = request.session.get('id')
+    tw_list = TwTweet.objects.filter(user_id_id=id).all()
+    return render(request, 'twc/home.html', {'list': tw_list})
 
 
 def tweet(request):
@@ -105,3 +116,23 @@ def tweet(request):
             form.save(commit=True)
             return redirect('twc:home')
     return
+
+
+def update(request, id):
+    if request.method == 'GET':
+        item = get_object_or_404(TwTweet, pk=id)
+        form = TwTweetForm(instance=item)
+        return render(request, 'twc/update.html', {'form': form})
+    elif request.method == 'POST':
+        form = TwTweetForm(request.POST)
+        if form.is_valid():
+            print(form)
+            form.save(commit=True)
+        return redirect('twc:home')
+
+
+def delete(request, id):
+    item = get_object_or_404(TwTweet, pk=id)
+    item.delete()
+    return redirect('twc:home')
+
