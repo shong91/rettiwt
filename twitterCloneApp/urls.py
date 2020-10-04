@@ -14,8 +14,8 @@ urlpatterns = [
     # tweet CRUD
     path('home/', views.list, name='home'),
     path('tweet/', views.tweet, name='tweet'),
-    path('update/<int:id>', views.update, name='update'),
-    path('delete/<int:id>', views.delete, name='delete'),
+    path('update/<int:id>/', views.update, name='update'),
+    path('delete/<int:id>/', views.delete, name='delete'),
 
 
 ]
