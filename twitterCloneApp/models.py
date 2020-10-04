@@ -24,9 +24,9 @@ help_text = {
 class TwFollowUser(models.Model):
     # follow_sno = models.IntegerField() # id가 있는데 이게 필요할까?
     # Many to One Relation: Foreign key 설정
-    user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwFollowUser_user_id", error_messages=None)            # PK = FK (identifying-relation)
-    following_user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, default=None, null=True, related_name="following_user_id")  # PK != FK (Non-identifying-relation)
-    follower_user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, default=None, null=True, related_name="follower_user_id")   # PK != FK (Non-identifying-relation)
+    user = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwFollowUser_user_id", error_messages=None)            # PK = FK (identifying-relation)
+    following_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, default=None, null=True, related_name="following_user_id")  # PK != FK (Non-identifying-relation)
+    follower_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, default=None, null=True, related_name="follower_user_id")   # PK != FK (Non-identifying-relation)
     data_del_yn = models.CharField(max_length=1, default="N")
     frt_user_id = models.CharField(max_length=30)
     frt_reg_date = models.DateTimeField(auto_now_add=True)
@@ -38,8 +38,8 @@ class TwTweet(models.Model):
     # tw_sno = models.IntegerField() # id가 있는데 이게 필요할까?
     tw_psno = models.IntegerField(null=True)
 
-    # FK 가 user_id 가 아니라 user_id_id 로 잡히는데 이렇게 하는 게 맞는건지..?
-    user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwTweet_user_id", error_messages=None)
+    # FK 가 user_id 가 아니라 user_id_id 로 잡혀서 renaming 함
+    user = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwTweet_user_id", error_messages=None)
     tw_content = models.CharField(max_length=500)
     tw_image_url = models.CharField(max_length=500, default=None, null=True)
     tw_gif_url = models.CharField(max_length=500, default=None, null=True)
@@ -51,15 +51,15 @@ class TwTweet(models.Model):
     last_user_id = models.CharField(max_length=30)
     last_chg_date = models.DateTimeField(auto_now=True)
 
-    REQUIRED_FIELDS = ['user_id', 'tw_content']
+    REQUIRED_FIELDS = ['user', 'tw_content']
 
 
 class TwAct(models.Model):
     tw_act_sno = models.IntegerField()
-    user_id = models.ForeignKey(TwTweet, on_delete=models.CASCADE, related_name="TwAct_user_id", error_messages=None)
-    rt_user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="rt_user_id")
-    qt_user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="qt_user_id")
-    like_user_id = models.ForeignKey(TwUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(TwTweet, on_delete=models.CASCADE, related_name="TwAct_user_id", error_messages=None)
+    rt_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="rt_user_id")
+    qt_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="qt_user_id")
+    like_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="like_user_id")
     data_del_yn = models.CharField(max_length=1, default="N")
     frt_user_id = models.CharField(max_length=30)
     frt_reg_date = models.DateTimeField(auto_now_add=True)
