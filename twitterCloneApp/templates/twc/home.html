@@ -4,12 +4,12 @@
 
 <div class="">
     {% for tweet in list %}
-        <p>{{ tweet.user_id_id }}</p>
+        <p>{{ tweet.user }}</p>
         <p>{{ tweet.tw_content }}</p>
         <p>{{ tweet.last_chg_date|date:"Y-m-d" }}</p>
-        {% if request.session.id == tweet.user_id_id %}
+        {% if request.session.id == tweet.user_id %}
             <a href="{% url 'twc:update' id=tweet.id %}">
-                <button class="btn btn-info"> 수정하기 </button>
+                <button type="submit" class="btn btn-info"> 수정하기 </button>
             </a>
             <a href="{% url 'twc:delete' id=tweet.id %}">
                 <button type="submit" class="btn btn-danger"> 삭제하기 </button>

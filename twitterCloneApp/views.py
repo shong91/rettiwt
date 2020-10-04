@@ -99,9 +99,10 @@ def logout(request):
 
 # tweet CRUD ======================================================================================================
 def list(request):
-    # user_id = request.session.get('user_id')
     id = request.session.get('id')
-    tw_list = TwTweet.objects.filter(user_id_id=id).all()
+    # tlqkf 이게 어떻게 되는거야 어떻게 알고 TwTweet.user_id(number)로 조인해서 TwUser.user_id(string) 을 가져오는거임
+    tw_list = TwTweet.objects.filter(user_id=id).select_related().all()
+
     return render(request, 'twc/home.html', {'list': tw_list})
 
 
@@ -119,15 +120,14 @@ def tweet(request):
 
 
 def update(request, id):
+    item = get_object_or_404(TwTweet, pk=id)
     if request.method == 'GET':
-        item = get_object_or_404(TwTweet, pk=id)
         form = TwTweetForm(instance=item)
-        return render(request, 'twc/update.html', {'form': form})
+        return render(request, 'twc/update.html', {'form': form, 'id': item.id})
     elif request.method == 'POST':
-        form = TwTweetForm(request.POST)
+        form = TwTweetForm(request.POST, instance=item)
         if form.is_valid():
-            print(form)
-            form.save(commit=True)
+            item = form.save(commit=True)
         return redirect('twc:home')
 
 
@@ -136,3 +136,5 @@ def delete(request, id):
     item.delete()
     return redirect('twc:home')
 
+# ORM 테이블 조인 : https://brownbears.tistory.com/101
+# Queryset 조작 명령어: https://velog.io/@gandalfzzing/Django-%EC%BF%BC%EB%A6%AC%EC%85%8B-%EC%A1%B0%EC%9E%91-%EB%AA%85%EB%A0%B9%EC%96%B4%EB%93%A4
