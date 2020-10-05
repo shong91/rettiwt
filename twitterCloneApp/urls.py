@@ -1,21 +1,23 @@
 from django.urls import path
-from . import views
-
-app_name = 'twc'
-
+from . import twuser_views, twtweet_views
 urlpatterns = [
-    path('', views.main, name='main'),
-    # join/login
-    path('join/', views.join, name='join'),
-    path('login/', views.user_login, name='login'),
-    path('activate/<str:uidb64>/<str:token>/', views.activate, name='activate'),
-    path('logout/', views.logout, name='logout'),
+    path('', twuser_views.main, name='main'),
+    # twUser
+    path('join/', twuser_views.join, name='join'),
+    path('login/', twuser_views.user_login, name='login'),
+    path('activate/<str:uidb64>/<str:token>/', twuser_views.activate, name='activate'),
+    path('logout/', twuser_views.logout, name='logout'),
+    path('profile/<str:id>', twuser_views.profile, name='profile'),
+    # twTweet
+    path('home/', twtweet_views.list, name='home'),
+    path('tweet/', twtweet_views.tweet, name='tweet'),
+    path('update/<int:id>/', twtweet_views.update, name='update'),
+    path('delete/<int:id>/', twtweet_views.delete, name='delete'),
 
-    # tweet CRUD
-    path('home/', views.list, name='home'),
-    path('tweet/', views.tweet, name='tweet'),
-    path('update/<int:id>/', views.update, name='update'),
-    path('delete/<int:id>/', views.delete, name='delete'),
+
 
 
 ]
+
+app_name = 'twc'
+
