@@ -1,0 +1,18 @@
+.nav2 {
+    display: inline-flex;
+    justify-content: space-around;
+    width: 28%;
+}
+
+.section {
+    display: inline-flex;
+    justify-content: space-around;
+    width: 40%;
+}
+
+.article {
+    display: inline-flex;
+    justify-content: space-around;
+    width: 30%;
+
+}
