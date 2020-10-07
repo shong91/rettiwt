@@ -101,5 +101,18 @@ def profile(request, id):
     user = TwUser.objects.filter(user_id=id).get()
     return render(request, 'twc/profile.html', {'user': user})
 
+
+def edit_profile(request):
+    id = request.session.get('id')
+    item = get_object_or_404(TwUser, pk=id)
+    if request.method == 'GET':
+        form = TwTweetForm(instance=item)
+        return render(request, 'twc/edit_profile.html', {'form': form})
+    elif request.method == 'POST':
+        form = TwTweetForm(request.POST, instance=item)
+        if form.is_valid():
+            item = form.save(commit=True)
+        return redirect('twc:profile')
+
 # ORM 테이블 조인 : https://brownbears.tistory.com/101
 # Queryset 조작 명령어: https://velog.io/@gandalfzzing/Django-%EC%BF%BC%EB%A6%AC%EC%85%8B-%EC%A1%B0%EC%9E%91-%EB%AA%85%EB%A0%B9%EC%96%B4%EB%93%A4
