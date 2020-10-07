@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from twitterCloneApp.token import account_active_token
-from twitterCloneApp.forms import TwJoinForm, TwLoginForm, TwTweetForm
+from twitterCloneApp.forms import TwJoinForm, TwLoginForm, TwUserProfileForm
 from django.db.models import Count, Avg
 
 # ====================================================================================================================================
@@ -104,15 +104,16 @@ def profile(request, id):
 
 def edit_profile(request):
     id = request.session.get('id')
+    user_id = request.session.get('user_id')
     item = get_object_or_404(TwUser, pk=id)
     if request.method == 'GET':
-        form = TwTweetForm(instance=item)
+        form = TwUserProfileForm(instance=item)
         return render(request, 'twc/edit_profile.html', {'form': form})
     elif request.method == 'POST':
-        form = TwTweetForm(request.POST, instance=item)
+        form = TwUserProfileForm(request.POST, instance=item)
         if form.is_valid():
             item = form.save(commit=True)
-        return redirect('twc:profile')
+        return redirect('twc:profile', id=user_id)
 
 # ORM 테이블 조인 : https://brownbears.tistory.com/101
 # Queryset 조작 명령어: https://velog.io/@gandalfzzing/Django-%EC%BF%BC%EB%A6%AC%EC%85%8B-%EC%A1%B0%EC%9E%91-%EB%AA%85%EB%A0%B9%EC%96%B4%EB%93%A4

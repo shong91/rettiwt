@@ -1,0 +1,21 @@
+{% extends 'twc/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <form action="{% url 'twc:edit_profile' %}" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_p }}
+        </table>
+        <button type="submit" class="btn btn-primary"> 정보 수정 </button>
+    </form>
+</div>
+
+<script>
+    let user_id = document.getElementById('{{ form.id.id_for_label }}')
+    user_id.value = '{{ request.session.id}}'
+    console.log(user_id.value);
+
+</script>
+{% endblock %}
+
