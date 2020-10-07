@@ -41,9 +41,8 @@ class TwTweet(models.Model):
     # FK 가 user_id 가 아니라 user_id_id 로 잡혀서 renaming 함
     user = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwTweet_user_id", error_messages=None)
     tw_content = models.CharField(max_length=500)
-    tw_image_url = models.CharField(max_length=500, default=None, null=True)
-    tw_gif_url = models.CharField(max_length=500, default=None, null=True)
-
+    # tw_image_url = models.CharField(max_length=500, default=None, null=True)
+    tw_image_url = models.ImageField(upload_to='img/', null=True, blank=True)
     # 공통컬럼
     data_del_yn = models.CharField(max_length=1, default="N")
     frt_user_id = models.CharField(max_length=30)
