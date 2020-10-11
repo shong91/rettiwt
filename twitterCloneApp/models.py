@@ -2,10 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from twitterCloneApp.authmodel import TwUser
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.contrib.auth.hashers import (
-    check_password, is_password_usable, make_password
-)
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors import ResizeToFit
+
 error_messages = {
     'user_id': _('아이디는 최대 30자로 설정 가능합니다. ')
     , 'user_nm': _('이름은 최대 15자로 설정 가능합니다.  ')
@@ -41,8 +40,20 @@ class TwTweet(models.Model):
     # FK 가 user_id 가 아니라 user_id_id 로 잡혀서 renaming 함
     user = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwTweet_user_id", error_messages=None)
     tw_content = models.CharField(max_length=500)
-    # tw_image_url = models.CharField(max_length=500, default=None, null=True)
-    tw_image_url = models.ImageField(upload_to='img/', null=True, blank=True)
+
+    # 이미지 업로드 : 참조) https://the-boxer.tistory.com/41
+    # save as Origin
+    # tw_image_url = models.ImageField(upload_to='img/', null=True, blank=True)
+    # save resized version
+    tw_image_url = ProcessedImageField(
+        upload_to='img/',
+        processors=[ResizeToFit(width=960, upscale=False)],
+        format='JPEG',
+        blank=True, null=True
+    )
+    # - ProcessedImageField: django-orm이 인식하는 처리된 이미지 속성. image필드와 마찬가지로, 이미지가 저장된 위치를 DB에 저장
+    # - ImageSpecField: 이미 생성된 이미지의 캐시용 이미지를 생성
+
     # 공통컬럼
     data_del_yn = models.CharField(max_length=1, default="N")
     frt_user_id = models.CharField(max_length=30)

@@ -33,6 +33,11 @@ def update(request, id):
     elif request.method == 'POST':
         form = TwTweetForm(request.POST, instance=item)
         if form.is_valid():
+            for img in request.FILES.getlist('tw_image_url'):
+                # Photo model(relation: TwTweet) 생성하여 photo.save()
+                pass
+            item.tw_image_url = request.POST['tw_image_url']
+            item.save()
             item = form.save(commit=True)
         return redirect('twc:home')
 

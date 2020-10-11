@@ -142,3 +142,7 @@ EMAIL_HOST_PASSWORD = 'mintproject1'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+# django는 이미지등의 정적 파일들을 media라는 폴더에 저장하고 관리
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+

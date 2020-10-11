@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('twc/', include("twitterCloneApp.urls")),
 ]
+
+# urlpatterns 에 이미지로 접근하는 주소 추가: static(통과시키는 url, document_root=실제 연결할 저장장소)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
