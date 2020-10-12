@@ -21,7 +21,7 @@ from django.conf import settings
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('twc/', include("twitterCloneApp.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # urlpatterns 에 이미지로 접근하는 주소 추가: static(통과시키는 url, document_root=실제 연결할 저장장소)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

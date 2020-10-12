@@ -15,8 +15,7 @@
 
             {% for image in image_list %}
                 {% if tweet.id == image.twTweet_id %}
-                    {{ image.image }}
-                    <img src="{{ image.image }}">
+                    <img src="/media/{{ image.image }}">
                 {% endif %}
             {% endfor %}
             <p>{{ tweet.last_chg_date|date:"Y-m-d" }}</p>
