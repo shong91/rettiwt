@@ -5,6 +5,7 @@
     <form action="{% url 'twc:tweet' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        <!--imageform 사용해서 multiple 하고 싶은데.. 구글링해도 1개를 여러번 올리는 방법밖에 안나와서 일단..-->
         <input type="file" name="images" multiple>
         <button type="submit" class="btn btn-primary"> 글쓰기 </button>
     </form>

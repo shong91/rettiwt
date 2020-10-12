@@ -8,9 +8,17 @@
         <img src="{% static 'img/image1.jpg' %}" class="mr-3 rounded-lg" alt="...">
         <div class="media-body">
             <h5 class="mt-0"> user_nm <span>@{{ tweet.user }}</span></h5>
+            {{ tweet.id }}
             {{ tweet.tw_content }}
 <!--            <img src="{% static 'img/image1.jpg' %}" >-->
-            <img src='/static/img/{{tweet.tw_image_url}}'>
+<!--            <img src='/static/img/{{tweet.tw_image_url}}'>-->
+
+            {% for image in image_list %}
+                {% if tweet.id == image.twTweet_id %}
+                    {{ image.image }}
+                    <img src="{{ image.image }}">
+                {% endif %}
+            {% endfor %}
             <p>{{ tweet.last_chg_date|date:"Y-m-d" }}</p>
             {% if request.session.id == tweet.user_id %}
             <a href="{% url 'twc:update' id=tweet.id %}">
