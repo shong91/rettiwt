@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from twitterCloneApp.authmodel import TwUser
-from twitterCloneApp.models import TwTweet
+from twitterCloneApp.models import TwTweet, TwImages
 from django.utils.translation import gettext_lazy as _
 
 
@@ -72,12 +72,18 @@ class TwUserProfileForm(ModelForm):
 class TwTweetForm(ModelForm):
     class Meta:
         model = TwTweet
-        fields = ['user', 'tw_content', 'tw_image_url']
+        fields = ['user', 'tw_content']
         labels = {
             'tw_content': _('내용')
-            , 'tw_image_url': _('이미지 url')
-            , 'tw_image_url': _('gif 이미지 url')
         }
         widgets = {
             'user': forms.HiddenInput()
         }
+
+
+class TwImageForm(ModelForm):
+    image = forms.ImageField(label='이미지')
+
+    class Meta:
+        model = TwImages
+        fields = ('image',)

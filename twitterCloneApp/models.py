@@ -41,16 +41,9 @@ class TwTweet(models.Model):
     user = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwTweet_user_id", error_messages=None)
     tw_content = models.CharField(max_length=500)
 
-    # 이미지 업로드 : 참조) https://the-boxer.tistory.com/41
     # save as Origin
     # tw_image_url = models.ImageField(upload_to='img/', null=True, blank=True)
-    # save resized version
-    tw_image_url = ProcessedImageField(
-        upload_to='img/',
-        processors=[ResizeToFit(width=960, upscale=False)],
-        format='JPEG',
-        blank=True, null=True
-    )
+
     # - ProcessedImageField: django-orm이 인식하는 처리된 이미지 속성. image필드와 마찬가지로, 이미지가 저장된 위치를 DB에 저장
     # - ImageSpecField: 이미 생성된 이미지의 캐시용 이미지를 생성
 
@@ -62,6 +55,19 @@ class TwTweet(models.Model):
     last_chg_date = models.DateTimeField(auto_now=True)
 
     REQUIRED_FIELDS = ['user', 'tw_content']
+
+
+# 이미지 업로드 : 참조) https://the-boxer.tistory.com/41
+# 멀티파일 업로드 : 참조) https://stackoverflow.com/questions/34006994/how-to-upload-multiple-images-to-a-blog-post-in-django
+class TwImages(models.Model):
+    twTweet = models.ForeignKey(TwTweet, blank=False, null=False, on_delete=models.CASCADE)
+    # save resized version
+    image =  ProcessedImageField(
+        upload_to='img/',
+        processors=[ResizeToFit(width=960, upscale=False)],
+        format='JPEG',
+        blank=True, null=True
+    )
 
 
 class TwAct(models.Model):
