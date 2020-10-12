@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from twitterCloneApp.models import TwTweet
+from twitterCloneApp.models import TwTweet, TwImages
 from twitterCloneApp.forms import TwTweetForm
 # tweet CRUD ======================================================================================================
 
@@ -18,27 +18,44 @@ def tweet(request):
         return render(request, 'twc/tweet.html', {'form': form})
     elif request.method == 'POST':
         form = TwTweetForm(request.POST)
+
+        print('=====================================')
+        print('fileList:', request.FILES.getlist('images'))
         if form.is_valid():
-            print(form)
-            form.save(commit=True)
+            item = form.save(commit=True)
+            for idx, image in enumerate(request.FILES.getlist('images')):
+                print(idx, ':', image)
+                image_form = TwImages()
+                image_form.twTweet = item
+                image_form.image = image
+                image_form.save()
+
             return redirect('twc:home')
     return
 
 
 def update(request, id):
     item = get_object_or_404(TwTweet, pk=id)
+    print(request.FILES)
     if request.method == 'GET':
         form = TwTweetForm(instance=item)
-        return render(request, 'twc/update.html', {'form': form, 'id': item.id})
+
+        return render(request, 'twc/update.html', {'fo'
+                                                   'rm': form, 'id': item.id})
     elif request.method == 'POST':
-        form = TwTweetForm(request.POST, instance=item)
+        form = TwTweetForm(request.POST, request.FILES, instance=item)
+        print(form)
         if form.is_valid():
-            for img in request.FILES.getlist('tw_image_url'):
+            for img in request.FILES.getlist('image'):
                 # Photo model(relation: TwTweet) 생성하여 photo.save()
+                print('in for loop')
+                print(img)
+                # item.tw_image_url = img
+                item = form.save(commit=True)
                 pass
-            item.tw_image_url = request.POST['tw_image_url']
-            item.save()
-            item = form.save(commit=True)
+            # item.tw_image_url = request.POST['tw_image_url']
+            # item.save()
+            # item = form.save(commit=True)
         return redirect('twc:home')
 
 
