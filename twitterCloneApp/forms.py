@@ -59,11 +59,11 @@ class TwLoginForm(ModelForm):
 class TwUserProfileForm(ModelForm):
     class Meta:
         model = TwUser
-        fields = ['user_nm', 'user_prof_pic', 'user_prof_bio', 'user_birthday', 'user_acc_pub_yn']
+        fields = ['user_nm', 'user_birthday', 'user_acc_pub_yn']
         labels = {
             'user_nm': _('닉네임')
-            , 'user_prof_pic': _('이미지 url')
-            , 'user_prof_bio': _('gif 이미지 url')
+            # , 'user_prof_pic': _('이미지 url')
+            # , 'user_prof_bio': _('바이오 이미지 url')
             , 'user_birthday': _('생년월일')
             , 'user_acc_pub_yn': _('계정 공개 여부')
         }

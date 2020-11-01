@@ -27,9 +27,9 @@ class TwFollowUser(models.Model):
     following_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, default=None, null=True, related_name="following_user_id")  # PK != FK (Non-identifying-relation)
     follower_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, default=None, null=True, related_name="follower_user_id")   # PK != FK (Non-identifying-relation)
     data_del_yn = models.CharField(max_length=1, default="N")
-    frt_user_id = models.CharField(max_length=30)
-    frt_reg_date = models.DateTimeField(auto_now_add=True)
-    last_user_id = models.CharField(max_length=30)
+    # frt_user_id = models.CharField(max_length=30)
+    # frt_reg_date = models.DateTimeField(auto_now_add=True)
+    # last_user_id = models.CharField(max_length=30)
     last_chg_date = models.DateTimeField(auto_now=True)
 
 
@@ -49,9 +49,9 @@ class TwTweet(models.Model):
 
     # 공통컬럼
     data_del_yn = models.CharField(max_length=1, default="N")
-    frt_user_id = models.CharField(max_length=30)
+    # frt_user_id = models.CharField(max_length=30)
     # date_joined으로 대체: frt_reg_date = models.DateTimeField(auto_now_add=True)
-    last_user_id = models.CharField(max_length=30)
+    # last_user_id = models.CharField(max_length=30)
     last_chg_date = models.DateTimeField(auto_now=True)
 
     REQUIRED_FIELDS = ['user', 'tw_content']
@@ -60,7 +60,7 @@ class TwTweet(models.Model):
 # 이미지 업로드 : 참조) https://the-boxer.tistory.com/41
 # 멀티파일 업로드 : 참조) https://stackoverflow.com/questions/34006994/how-to-upload-multiple-images-to-a-blog-post-in-django
 class TwImages(models.Model):
-    twTweet = models.ForeignKey(TwTweet, blank=False, null=False, on_delete=models.CASCADE)
+    tweet = models.ForeignKey(TwTweet, blank=False, null=False, on_delete=models.CASCADE)
     # save resized version
     image =  ProcessedImageField(
         upload_to='img/',
@@ -77,9 +77,9 @@ class TwAct(models.Model):
     qt_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="qt_user_id")
     like_user = models.ForeignKey(TwUser, on_delete=models.CASCADE, null=True, related_name="like_user_id")
     data_del_yn = models.CharField(max_length=1, default="N")
-    frt_user_id = models.CharField(max_length=30)
-    frt_reg_date = models.DateTimeField(auto_now_add=True)
-    last_user_id = models.CharField(max_length=30)
+    # frt_user_id = models.CharField(max_length=30)
+    # frt_reg_date = models.DateTimeField(auto_now_add=True)
+    # last_user_id = models.CharField(max_length=30)
     last_chg_date = models.DateTimeField(auto_now=True)
 
 

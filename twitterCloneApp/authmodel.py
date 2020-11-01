@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.contrib.auth.hashers import (
     check_password, is_password_usable, make_password
 )
+from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.processors import ResizeToFit
 
 
 class UserManager(BaseUserManager):
@@ -53,8 +55,18 @@ class TwUser(AbstractBaseUser, PermissionsMixin):
     user_telno = models.CharField(max_length=12, default=None, null=True)
     user_birthday = models.CharField(max_length=8)
     user_acc_pub_yn = models.CharField(max_length=1, default="Y")
-    user_prof_pic = models.CharField(max_length=500)
-    user_prof_bio = models.CharField(max_length=500)
+    user_prof_pic = ProcessedImageField(
+                                    upload_to='user/',
+                                    processors=[ResizeToFit(width=300, upscale=False)],
+                                    format='JPEG',
+                                    blank=True, null=True
+                                )
+    user_prof_bio = ProcessedImageField(
+                                    upload_to='user/',
+                                    processors=[ResizeToFit(width=300, upscale=False)],
+                                    format='JPEG',
+                                    blank=True, null=True
+                                )
 
     # is_active , is_admin 은 Django 유저 모델의 필수 필드이기 때문에 반드시 정의되어야 한다.
     is_active = models.BooleanField(default=True)
@@ -65,10 +77,10 @@ class TwUser(AbstractBaseUser, PermissionsMixin):
 
     # 공통컬럼
     data_del_yn = models.CharField(max_length=1, default="N")
-    frt_user_id = models.CharField(max_length=30)
-    # date_joined으로 대체: frt_reg_date = models.DateTimeField(auto_now_add=True)
-    last_user_id = models.CharField(max_length=30)
     last_chg_date = models.DateTimeField(auto_now=True)
+    # frt_user_id = models.CharField(max_length=30)
+    # date_joined으로 대체: frt_reg_date = models.DateTimeField(auto_now_add=True)
+    # last_user_id = models.CharField(max_length=30)
 
     # 커스텀 User model 의 unique identifier
     USERNAME_FIELD = 'user_id'
