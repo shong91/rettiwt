@@ -99,6 +99,7 @@ def logout(request):
 
 def profile(request, id):
     user = TwUser.objects.filter(user_id=id).get()
+    print(user)
     return render(request, 'twc/profile.html', {'user': user})
 
 
@@ -110,9 +111,23 @@ def edit_profile(request):
         form = TwUserProfileForm(instance=item)
         return render(request, 'twc/edit_profile.html', {'form': form})
     elif request.method == 'POST':
-        form = TwUserProfileForm(request.POST, instance=item)
+        form = TwUserProfileForm(request.POST, request.FILES, instance=item)
+        print('=============================================')
+        image1 = request.FILES.getlist('images1')
+        image2 = request.FILES.getlist('images2')
+
+        if len(image1) != 0:
+            user_prof_pic = image1[0]
+            item.user_prof_pic = user_prof_pic
+
+        if len(image2) != 0:
+            user_prof_bio = image2[0]
+            item.user_prof_bio = user_prof_bio
+
         if form.is_valid():
             item = form.save(commit=True)
+            item.save()
+            print(item)
         return redirect('twc:profile', id=user_id)
 
 # ORM 테이블 조인 : https://brownbears.tistory.com/101
