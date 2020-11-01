@@ -6,7 +6,9 @@
       <div class="card-body">
         <h5 class="card-title">{{ user.user_id }}</h5>  {{ user.user_nm }}
         <p class="card-text">{{ user.user_email }} </p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          <p> profile <img src="/media/{{ user.user_prof_pic}}"></p>
+          <p> bio <img src="/media/{{ user.user_prof_bio}}"></p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
           <a href="{% url 'twc:edit_profile' %}"><button type="submit" class="btn btn-info"> 정보 수정 </button></a>
       </div>
     </div>
