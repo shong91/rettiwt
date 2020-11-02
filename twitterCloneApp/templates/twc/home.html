@@ -10,6 +10,7 @@
             <h5 class="mt-0"> user_nm <span>@{{ tweet.user }}</span></h5>
 <!--            <img src="{% static 'img/image1.jpg' %}" >-->
 <!--            <img src='/static/img/{{tweet.tw_image_url}}'>-->
+            {{ tweet.tw_content }}
              {% for queryset in image_list %}
                 {% for image in queryset %}
                     {% if tweet.id == image.tweet_id %}

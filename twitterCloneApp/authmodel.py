@@ -46,6 +46,8 @@ class UserManager(BaseUserManager):
 
 
 class TwUser(AbstractBaseUser, PermissionsMixin):
+    CHOICES = (('0', 'Y'), ('1', 'N'))
+
     objects = UserManager()
     user_id = models.CharField(max_length=30) #, help_text=help_text.get('user_id'), error_messages=error_messages)
     user_nm = models.CharField(max_length=45) #, help_text=help_text.get('user_nm'), error_messages=error_messages)
@@ -54,7 +56,7 @@ class TwUser(AbstractBaseUser, PermissionsMixin):
 
     user_telno = models.CharField(max_length=12, default=None, null=True)
     user_birthday = models.CharField(max_length=8)
-    user_acc_pub_yn = models.CharField(max_length=1, default="Y")
+    user_acc_pub_yn = models.CharField(max_length=1, choices=CHOICES)
     user_prof_pic = ProcessedImageField(
                                     upload_to='user/',
                                     processors=[ResizeToFit(width=300, upscale=False)],

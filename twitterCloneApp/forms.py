@@ -23,8 +23,10 @@ class TwJoinForm(ModelForm):
         #     , 'user_pwd': _('비밀번호를 입력해주세요. ')
         # }
         widgets = {
-            'user_pwd': forms.PasswordInput()
-            , 'user_email': forms.EmailInput()
+            'user_id': forms.TextInput(attrs={'class': 'form-control'})
+            , 'user_nm': forms.TextInput(attrs={'class': 'form-control'})
+            , 'user_pwd': forms.PasswordInput(attrs={'class': 'form-control'})
+            , 'user_email': forms.EmailInput(attrs={'class': 'form-control'})
         }
         # error_messages = {
         #     'user_id': _('아이디는 최대 30자로 설정 가능합니다. ')
@@ -48,7 +50,8 @@ class TwLoginForm(ModelForm):
         #     , 'user_pwd': _('비밀번호를 입력해주세요. ')
         # }
         widgets = {
-            'user_pwd': forms.PasswordInput()
+            'user_id': forms.TextInput(attrs={'class': 'form-control'})
+            , 'user_pwd': forms.PasswordInput(attrs={'class': 'form-control'})
         }
         # error_messages = {
         #     'user_id': _('아이디는 최대 30자로 설정 가능합니다. ')
@@ -60,12 +63,18 @@ class TwUserProfileForm(ModelForm):
     class Meta:
         model = TwUser
         fields = ['user_nm', 'user_birthday', 'user_acc_pub_yn']
+
         labels = {
             'user_nm': _('닉네임')
             # , 'user_prof_pic': _('이미지 url')
             # , 'user_prof_bio': _('바이오 이미지 url')
             , 'user_birthday': _('생년월일')
             , 'user_acc_pub_yn': _('계정 공개 여부')
+        }
+        widgets = {
+            'user_nm': forms.TextInput(attrs={'class': 'form-control'})
+            , 'user_birthday': forms.TextInput(attrs={'class': 'form-control'})
+            , 'user_acc_pub_yn': forms.CheckboxInput()
         }
 
 
