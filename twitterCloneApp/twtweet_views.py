@@ -7,15 +7,18 @@ from twitterCloneApp.forms import TwTweetForm
 def list(request):
     id = request.session.get('id')
     # tlqkf 이게 어떻게 되는거야 어떻게 알고 TwTweet.user_id(number)로 조인해서 TwUser.user_id(string) 을 가져오는거임
-    tw_list = TwTweet.objects.filter(user_id=id).select_related('user').all()
+    tw_list = TwTweet.objects.filter(user_id=id).prefetch_related('user').all().order_by('-last_chg_date')
+    tw_image_list = []
     # <QuerySet [<TwTweet:TwTweet object(id=3)>, <>, <>, ...]> 의 형태
     for tweet in tw_list:
         # queryset to list
-        tw_image_queryset = TwImages.objects.filter(twTweet=tweet.id).select_related('twTweet')
-        print(tw_image_queryset)
-        # tw_image_queryset = TwImages.objects.filter(twTweet=tweet.id).select_related().values()
+        tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related('tweet').all()
+        if len(tw_image_queryset) != 0:
+            tw_image_list.append(tw_image_queryset)
+            print(tw_image_queryset.values())
+        # tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related().values()
 
-    return render(request, 'twc/home.html', {'list': tw_list, 'image_list': tw_image_queryset})
+    return render(request, 'twc/home.html', {'list': tw_list, 'image_list': tw_image_list})
 
 
 def tweet(request):
@@ -30,7 +33,7 @@ def tweet(request):
             for idx, image in enumerate(request.FILES.getlist('images')):
                 print(idx, ':', image)
                 image_form = TwImages()
-                image_form.twTweet = item   # TwImages.twTweet (FK) <== TwTweet.id (PK)
+                image_form.tweet = item   # TwImages.twTweet (FK) <== TwTweet.id (PK)
                 image_form.image = image
                 image_form.save()
 
@@ -40,12 +43,10 @@ def tweet(request):
 
 def update(request, id):
     item = get_object_or_404(TwTweet, pk=id)
-    print(request.FILES)
     if request.method == 'GET':
         form = TwTweetForm(instance=item)
 
-        return render(request, 'twc/update.html', {'fo'
-                                                   'rm': form, 'id': item.id})
+        return render(request, 'twc/update.html', {'form': form, 'id': item.id})
     elif request.method == 'POST':
         form = TwTweetForm(request.POST, request.FILES, instance=item)
         print(form)
