@@ -62,7 +62,7 @@ class TwTweet(models.Model):
 class TwImages(models.Model):
     tweet = models.ForeignKey(TwTweet, blank=False, null=False, on_delete=models.CASCADE)
     # save resized version
-    image =  ProcessedImageField(
+    image = ProcessedImageField(
         upload_to='img/',
         processors=[ResizeToFit(width=960, upscale=False)],
         format='JPEG',
