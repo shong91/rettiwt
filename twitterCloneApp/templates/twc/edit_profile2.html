@@ -4,15 +4,38 @@
     <form action="{% url 'twc:edit_profile' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
-            <p> 아이디 </p> <input type="text" name="user_id" id="user_id" class="" readonly>
-            <p> 닉네임 </p> <input type="text" name="user_nm" class="">
-            <p> 생년월일 </p> 
-                <option name="user_birthday" class="">
-                    
-                </option>
-            <p> 계정 공개 </p> <input type="checkbox" name="user_acc_pub_yn" class="">
-            <p> 프로필 사진 </p> <input type="file" name="images1">
-            <p> 바이오(배경) 사진 </p> <input type="file" name="images2">
+            <div>
+                <label> 아이디 </label>
+                <input type="text" name="user_id" id="user_id" class="" readonly>
+            </div>
+            <div>
+                <label> 닉네임 </label> 
+                <input type="text" name="user_nm" class="">
+            </div>
+            <div>
+                <label> 생년월일 </label> 
+                <select name="byear" class="">
+                    <option name=""></option>
+                </select>
+                <select name="bmonth" class="">
+                    <option name=""></option>
+                </select>
+                <select name="bday" class="">
+                    <option name=""></option>
+                </select>
+            </div>
+            <div>
+                <label> 계정 공개 </label> 
+                <input type="checkbox" name="user_acc_pub_yn" class="">
+            </div>
+            <div>
+                <label> 프로필 사진 </label> 
+                <input type="file" name="images1">
+            </div>
+            <div>
+                <label> 바이오(배경) 사진 </label> 
+                <input type="file" name="images2">
+            </div>
         </table>
         <button type="submit" class="btn btn-primary"> 정보 수정 </button>
 
