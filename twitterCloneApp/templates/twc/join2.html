@@ -1,0 +1,13 @@
+{% extends 'twc/base.html' %}
+{% load static %}
+<div class="container">
+    <form action="{% url 'twc:join' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="user_id" placeholder="ex) gildong_hong" class="">
+        <input type="text" name="user_nm" placeholder="ex) 홍길동" class="">
+        <input type="email" name="user_email" placeholder="ex) gildong@gmail.com" class="">
+        <input type="password" name="user_pwd" placeholder="영문+숫자 조합, 8자리 이상" class="">
+        <button type="submit" class="btn btn-primary"> 가입 </button>
+    </form>
+</div>
+<script src="{% static 'js/join.js' %}"></script>
