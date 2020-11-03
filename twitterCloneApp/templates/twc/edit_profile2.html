@@ -3,54 +3,55 @@
 <div class="container">
     <form action="{% url 'twc:edit_profile' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <table>
-            <div>
-                <label> 아이디 </label>
-                <input type="text" name="user_id" id="user_id" class="" readonly>
-            </div>
-            <div>
-                <label> 닉네임 </label> 
-                <input type="text" name="user_nm" class="">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect1"> 생년월일 </label>
-                <select class="form-control" name="byear" id="exampleFormControlSelect1">
-                  <option>1990</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
+        <div>
+            <label> 아이디 </label>
+            <input type="text" name="user_id" id="user_id" class="" readonly>
+        </div>
+        <div>
+            <label> 닉네임 </label> 
+            <input type="text" name="user_nm" class="">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1"> 생년월일 </label>
+            <select class="form-control" name="byear" id="exampleFormControlSelect1">
+                <option>1990</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
 
-                <select class="form-control" name="bmonth" id="exampleFormControlSelect1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
+            <select class="form-control" name="bmonth" id="exampleFormControlSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
 
-                <select class="form-control" name="bday" id="exampleFormControlSelect1">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-              </div>
-            <div>
-                <label> 계정 공개 </label> 
-                <input type="checkbox" name="user_acc_pub_yn" class="">
+            <select class="form-control" name="bday" id="exampleFormControlSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
             </div>
-            <div>
-                <label> 프로필 사진 </label> 
-                <input type="file" name="images1">
-            </div>
-            <div>
-                <label> 바이오(배경) 사진 </label> 
-                <input type="file" name="images2">
-            </div>
-        </table>
+        <div>
+            <label> 계정 공개 </label> 
+            <input type="checkbox" name="user_acc_pub_yn" class="">
+        </div>
+        
+        <div class="form-group">
+            <label for="exampleFormControlFile1"> 프로필 사진 </label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="image1">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlFile1"> 바이오 사진 </label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="image2">
+        </div>
+
         <button type="submit" class="btn btn-primary"> 정보 수정 </button>
 
     </form>
