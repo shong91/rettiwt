@@ -26,9 +26,10 @@ def main(request):
 
 def join(request):
     if request.method == 'GET':
-        join_form = TwJoinForm()
-        return render(request, 'twc/join.html', {'form': join_form})
+        return render(request, 'twc/join.html')
     elif request.method == 'POST':
+        # serialize data
+
         join_form = TwJoinForm(request.POST)
         if join_form.is_valid():
             user = TwUser.objects.create_user(**join_form.cleaned_data)
