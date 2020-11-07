@@ -24,14 +24,29 @@ btn_save.addEventListener('click', function(){
     // } 
     
     // call view (POST)
-    
     console.log('pass validation! ');
+    
+    // httpRequest 사용 
     var form = document.querySelector('#join_form');
     var formData = new FormData(form);
-    var request = new XMLHttpRequest();
-    request.open('POST', '');   // 'twc/join/'
-    request.send(formData);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '', true);   // 'twc/join/'
+    xhr.send(formData); // formData 형태로 보내기 때문에 header에 {"Content-Type": "application/json"} 설정하지 않음 
 
+    //  jquery 사용 (ajax 전송 시)
+//    var form = $('#join_form').serialize();
+//    $.ajax({
+//        type: 'POST',
+//        url: '',
+//        data: formData,
+//        success: function (response) {
+//            alert('success');
+//        },
+//        error: function (response) {
+//            alert(response);
+//        }
+//    })
+    
 });
 
 //ref) https://codepen.io/ntpumartin/pen/MWYmypq
