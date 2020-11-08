@@ -11,13 +11,13 @@
 <!--            <img src="{% static 'img/image1.jpg' %}" >-->
 <!--            <img src='/static/img/{{tweet.tw_image_url}}'>-->
             {{ tweet.tw_content }}
-             {% for queryset in image_list %}
-                {% for image in queryset %}
-                    {% if tweet.id == image.tweet_id %}
-                    <img src="/media/{{ image.image }}">
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
+<!--             {% for queryset in image_list %}-->
+<!--                {% for image in queryset %}-->
+<!--                    {% if tweet.id == image.tweet_id %}-->
+<!--                    <img src="/media/{{ image.image }}">-->
+<!--                    {% endif %}-->
+<!--                {% endfor %}-->
+<!--            {% endfor %}-->
             <p>{{ tweet.last_chg_date|date:"Y-m-d" }}</p>
             {% if request.session.id == tweet.user_id %}
             <a href="{% url 'twc:update' id=tweet.id %}">

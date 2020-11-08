@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, Http404
 # 로그인 인증 관련
 from twitterCloneApp.authmodel import TwUser
 from twitterCloneApp.mybackends import MyBackend
@@ -10,6 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from twitterCloneApp.token import account_active_token
+
 from twitterCloneApp.forms import TwJoinForm, TwLoginForm, TwUserProfileForm
 from django.db.models import Count, Avg
 
@@ -33,7 +33,7 @@ def join(request):
             # return JsonResponse({"valid": False}, status=200)
             pass
 
-        return render(request, 'twc/joinform.html', {'form': join_form})
+        return render(request, 'twc/join.html', {'form': join_form})
         # return render(request, 'twc/join.html')
     elif request.method == 'POST':
         join_form = TwJoinForm(request.POST)     

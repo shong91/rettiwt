@@ -81,12 +81,14 @@ class TwUserProfileForm(ModelForm):
 class TwTweetForm(ModelForm):
     class Meta:
         model = TwTweet
-        fields = ['user', 'tw_content']
+        fields = ['user', 'tw_content', 'image']
         labels = {
             'tw_content': _('내용')
+            , 'image': _('이미지')
         }
         widgets = {
             'user': forms.HiddenInput()
+            , 'image': forms.ImageField()
         }
 
 

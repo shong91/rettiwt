@@ -47,12 +47,11 @@ class UserManager(BaseUserManager):
 
 class TwUser(AbstractBaseUser, PermissionsMixin):
     CHOICES = (('0', 'Y'), ('1', 'N'))
-
     objects = UserManager()
-    user_id = models.CharField(max_length=30) #, help_text=help_text.get('user_id'), error_messages=error_messages)
-    user_nm = models.CharField(max_length=45) #, help_text=help_text.get('user_nm'), error_messages=error_messages)
-    user_email = models.CharField(max_length=100) #, help_text=help_text.get('user_email'), error_messages=error_messages)
-    user_pwd = models.CharField(max_length=128) #, help_text=help_text.get('user_pwd'), error_messages=error_messages)
+    user_id = models.CharField(max_length=30, unique=True)
+    user_nm = models.CharField(max_length=45)
+    user_email = models.EmailField(max_length=100)
+    user_pwd = models.CharField(max_length=128) # help_text=help_text.get('user_pwd'), error_messages=error_messages)
 
     user_telno = models.CharField(max_length=12, default=None, null=True)
     user_birthday = models.CharField(max_length=8)
@@ -79,11 +78,10 @@ class TwUser(AbstractBaseUser, PermissionsMixin):
 
     # 공통컬럼
     data_del_yn = models.CharField(max_length=1, default="N")
-    last_chg_date = models.DateTimeField(auto_now=True)
-    # frt_user_id = models.CharField(max_length=30)
-    # date_joined으로 대체: frt_reg_date = models.DateTimeField(auto_now_add=True)
-    # last_user_id = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # 커스텀 User model 의 unique identifier
     USERNAME_FIELD = 'user_id'
     REQUIRED_FIELDS = ['user_nm', 'user_email']  # python manage.py superuser 로 관리자계정 생성 시 필요한 필드들 명시시
+

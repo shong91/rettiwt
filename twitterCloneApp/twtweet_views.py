@@ -1,24 +1,33 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from twitterCloneApp.models import TwTweet, TwImages
 from twitterCloneApp.forms import TwTweetForm
-# tweet CRUD ======================================================================================================
+# ======================================================================================================
 
 
 def get_list(request):
     id = request.session.get('id')
-    # tlqkf 이게 어떻게 되는거야 어떻게 알고 TwTweet.user_id(number)로 조인해서 TwUser.user_id(string) 을 가져오는거임
-    tw_list = TwTweet.objects.filter(user_id=id).prefetch_related('user').all().order_by('-last_chg_date')
-    tw_image_list = []
-    # <QuerySet [<TwTweet:TwTweet object(id=3)>, <>, <>, ...]> 의 형태
-    for tweet in tw_list:
-        # queryset to list
-        tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related('tweet').all()
-        if len(tw_image_queryset) != 0:
-            tw_image_list.append(tw_image_queryset)
-            print(tw_image_queryset.values())
-        # tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related().values()
 
-    return render(request, 'twc/home.html', {'list': tw_list, 'image_list': tw_image_list})
+    # .get() 은 객체를 리턴한다
+    tw_list = TwTweet.objects.all(user_id=id)
+
+    # ref) 모델 간의 릴레이션을 이용하여 TwImages 에서 TwTweet Object 를 가져올 수 있다
+    # tw_image_list = TwImages.objects.filter(tweet_id=30) # TwImages Object(2)
+    # tweet = tw_image_list.tweet # TwTweet Object(30) (instance) (not iterable, onle one tweet)
+    # user = tweet.user # user_nm = test
+
+    print('===================================================')
+    # print(tw_image_queryset.values())
+    # tw_image_list = []
+    # # <QuerySet [<TwTweet:TwTweet object(id=3)>, <>, <>, ...]> 의 형태
+    # for tweet in tw_list:
+    #     # queryset to list
+    #     tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related('tweet').all()
+    #     if len(tw_image_queryset) != 0:
+    #         tw_image_list.append(tw_image_queryset)
+    #         # print(tw_image_queryset.values())
+    #     # tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related().values()
+
+    return render(request, 'twc/home.html', {'list': tweet, 'image_list': tw_image_list})
 
 
 def tweet(request):
