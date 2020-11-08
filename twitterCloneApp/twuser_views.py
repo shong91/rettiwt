@@ -36,59 +36,56 @@ def join(request):
         return render(request, 'twc/joinform.html', {'form': join_form})
         # return render(request, 'twc/join.html')
     elif request.method == 'POST':
-        # serialize data: QueryDict to dict
-        serialized_data = request.POST.dict()
-        del serialized_data['csrfmiddlewaretoken'] # sames as : serialized_data.pop('csrfmiddlewaretoken')
-        print('myDict: ', serialized_data)
-        user = TwUser.objects.create_user(**serialized_data)
-        user.is_active = False # 이메일 인증 전 유저 비활성화
-        user.save()
+        join_form = TwJoinForm(request.POST)     
+        if join_form.is_valid():
+            user = TwUser.objects.create_user(**join_form.cleaned_data)
+            user.is_active = False # 이메일 인증 전 유저 비활성화
+            user.save()
+        
+            current_site = get_current_site(request)
+            message = render_to_string('twc/activation_email.html', {
+                'user': user,
+                'domain': current_site.domain, # 127.0.0.1:8000
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_active_token.make_token(user) # 토큰값 생성
+            })
+        
+            mail_title = '회원가입 인증 메일'
+            mail_to = request.POST['user_email']
+            email = EmailMessage(mail_title, message, to=[mail_to])
+            email.send()
+        
+            return redirect('twc:main')
 
-        current_site = get_current_site(request)
-        print('current_site', current_site)
-        message = render_to_string('twc/activation_email.html', {
-            'user': user,
-            'domain': current_site.domain, # 127.0.0.1:8000
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': account_active_token.make_token(user) # 토큰값 생성
-        })
+        # ref) serialize data: QueryDict to dict
+        # serialized_data = request.POST.dict()
+        # del serialized_data['csrfmiddlewaretoken'] # sames as : serialized_data.pop('csrfmiddlewaretoken')
+        # print('myDict: ', serialized_data)
+        # user = TwUser.objects.create_user(**serialized_data)
+        # user.is_active = False # 이메일 인증 전 유저 비활성화
+        # user.save()
 
-        mail_title = '회원가입 인증 메일'
-        mail_to = serialized_data['user_email']
-        email = EmailMessage(mail_title, message, to=[mail_to])
-        email.send()
-        print('=======================================================')
-        return redirect('twc:main')
-        # join_form = TwJoinForm(request.POST)
-        # return
-        # if join_form.is_valid():
-        #     user = TwUser.objects.create_user(**join_form.cleaned_data)
-        #     user.is_active = False # 이메일 인증 전 유저 비활성화
-        #     user.save()
-        #
-        #     current_site = get_current_site(request)
-        #     message = render_to_string('twc/activation_email.html', {
-        #         'user': user,
-        #         'domain': current_site.domain, # 127.0.0.1:8000
-        #         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        #         'token': account_active_token.make_token(user) # 토큰값 생성
-        #     })
-        #
-        #     mail_title = '회원가입 인증 메일'
-        #     mail_to = request.POST['user_email']
-        #     email = EmailMessage(mail_title, message, to=[mail_to])
-        #     email.send()
-        #
-        #     return redirect('twc:main')
+        # current_site = get_current_site(request)
+        # message = render_to_string('twc/activation_email.html', {
+        #     'user': user,
+        #     'domain': current_site.domain, # 127.0.0.1:8000
+        #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        #     'token': account_active_token.make_token(user) # 토큰값 생성
+        # })
+
+        # mail_title = '회원가입 인증 메일'
+        # mail_to = serialized_data['user_email']
+        # email = EmailMessage(mail_title, message, to=[mail_to])
+        # email.send()
+        # return redirect('twc:main')
 
 
 def user_login(request):
     if request.method == 'GET':
         login_form = TwLoginForm()
-        return render(request, 'twc/loginform.html', {'form': login_form})
+        return render(request, 'twc/login.html', {'form': login_form})
     elif request.method == 'POST':
-        login_form = TwLoginForm(request.POST)
-        # print('login_form: ', login_form.cleaned_data['user_id'])
+        login_form = TwLoginForm(request.POST) # customized form 에서 보낸 데이터를 Form 클래스를 이용하여 받을 수 있음!
         user_id = request.POST['user_id']
         user_pwd = request.POST['user_pwd']
         user = mybackend.authenticate(request, user_id, user_pwd)
@@ -98,7 +95,7 @@ def user_login(request):
             request.session['user_id'] = user_id
             return redirect('twc:home')
         else:  # 로그인 실패
-            return render(request, 'twc/loginform.html', {'form': login_form, 'error': '아이디 혹은 비밀번호가 틀렸습니다. '})
+            return render(request, 'twc/login.html', {'form': login_form, 'error': '아이디 혹은 비밀번호가 틀렸습니다. '})
 
 
 

@@ -1,5 +1,6 @@
 {% extends 'twc/base.html' %}
 {% load static %}
+{% block content %}
 <div class="container">
     <form action="{% url 'twc:edit_profile' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -66,3 +67,4 @@
     console.log(user_id.value);
 
 </script>
+{% endblock %}
