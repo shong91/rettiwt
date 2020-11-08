@@ -4,7 +4,7 @@ from twitterCloneApp.forms import TwTweetForm
 # tweet CRUD ======================================================================================================
 
 
-def list(request):
+def get_list(request):
     id = request.session.get('id')
     # tlqkf 이게 어떻게 되는거야 어떻게 알고 TwTweet.user_id(number)로 조인해서 TwUser.user_id(string) 을 가져오는거임
     tw_list = TwTweet.objects.filter(user_id=id).prefetch_related('user').all().order_by('-last_chg_date')

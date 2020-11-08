@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, Http404
 # 로그인 인증 관련
 from twitterCloneApp.authmodel import TwUser
 from twitterCloneApp.mybackends import MyBackend
@@ -11,7 +12,7 @@ from django.utils.encoding import force_bytes, force_text
 from twitterCloneApp.token import account_active_token
 from twitterCloneApp.forms import TwJoinForm, TwLoginForm, TwUserProfileForm
 from django.db.models import Count, Avg
-import requests
+
 # ====================================================================================================================================
 
 mybackend = MyBackend()
@@ -26,15 +27,14 @@ def main(request):
 
 def join(request):
     if request.method == 'GET':
+        join_form = TwJoinForm()
+
         if request.is_ajax and request.method == "GET": # 아이디 중복검사
+            # return JsonResponse({"valid": False}, status=200)
             pass
-            # # get the nick name from the client side.
-            # nick_name = request.GET.get("nick_name", None)
-            # # check for the nick name in the database.
-            # if Friend.objects.filter(nick_name=nick_name).exists():
-            #     # if nick_name found return not valid new friend
-            #     return JsonResponse({"valid": False}, status=200)
-        return render(request, 'twc/join.html')
+
+        return render(request, 'twc/joinform.html', {'form': join_form})
+        # return render(request, 'twc/join.html')
     elif request.method == 'POST':
         # serialize data: QueryDict to dict
         serialized_data = request.POST.dict()
@@ -45,6 +45,7 @@ def join(request):
         user.save()
 
         current_site = get_current_site(request)
+        print('current_site', current_site)
         message = render_to_string('twc/activation_email.html', {
             'user': user,
             'domain': current_site.domain, # 127.0.0.1:8000
@@ -53,12 +54,11 @@ def join(request):
         })
 
         mail_title = '회원가입 인증 메일'
-        mail_to = request.POST['user_email']
+        mail_to = serialized_data['user_email']
         email = EmailMessage(mail_title, message, to=[mail_to])
         email.send()
-
+        print('=======================================================')
         return redirect('twc:main')
-
         # join_form = TwJoinForm(request.POST)
         # return
         # if join_form.is_valid():
@@ -85,20 +85,21 @@ def join(request):
 def user_login(request):
     if request.method == 'GET':
         login_form = TwLoginForm()
-        return render(request, 'twc/login.html', {'form': login_form})
+        return render(request, 'twc/loginform.html', {'form': login_form})
     elif request.method == 'POST':
         login_form = TwLoginForm(request.POST)
-        print('login_form: ', login_form.cleaned_data['user_id'])
+        # print('login_form: ', login_form.cleaned_data['user_id'])
         user_id = request.POST['user_id']
         user_pwd = request.POST['user_pwd']
         user = mybackend.authenticate(request, user_id, user_pwd)
-        if user is not None and user.is_active:     # 로그인 인증 & 이메일 인증 완료 -> 로그인 성공
+        if user is not None and user.is_active:  # 로그인 인증 & 이메일 인증 완료 -> 로그인 성공
             mybackend.get_user(user_id)
             request.session['id'] = user.id
             request.session['user_id'] = user_id
             return redirect('twc:home')
-        else:                                        # 로그인 실패
-            return redirect('twc:login')
+        else:  # 로그인 실패
+            return render(request, 'twc/loginform.html', {'form': login_form, 'error': '아이디 혹은 비밀번호가 틀렸습니다. '})
+
 
 
 def activate(request, uidb64, token):

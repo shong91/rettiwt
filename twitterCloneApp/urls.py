@@ -11,7 +11,7 @@ urlpatterns = [
     path('setting/profile', twuser_views.edit_profile, name='edit_profile'),
 
     # twTweet
-    path('home/', twtweet_views.list, name='home'),
+    path('home/', twtweet_views.get_list, name='home'),
     path('tweet/', twtweet_views.tweet, name='tweet'),
     path('update/<int:id>/', twtweet_views.update, name='update'),
     path('delete/<int:id>/', twtweet_views.delete, name='delete'),
