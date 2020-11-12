@@ -2,23 +2,26 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <form action="{% url 'twc:tweet' %}" method="POST" enctype="multipart/form-data">
+    <form name="tweet_form" id="tweet_form" action="{% url 'twc:tweet' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="hidden" name="user" class="">
-        <div>
-            <textarea name="tw_content" class="" maxlength="140"></textarea>
+        <input type="hidden" name="user" id="user_id">
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1"></label>
+            <textarea name="tw_content" class="form-control tw_content" id="exampleFormControlTextarea1" rows="3" maxlength="140"></textarea>
         </div>
-        <!--imageform 사용해서 multiple 하고 싶은데.. 구글링해도 1개를 여러번 올리는 방법밖에 안나와서 일단..-->
-        <div>
-            <input type="file" name="images" multiple>
+        
+        <div class="form-group">
+            <label for="exampleFormControlFile1"></label>
+            <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" multiple>
         </div>
-        <button type="submit" class="btn btn-primary"> 글쓰기 </button>
+       
+        <button type="button" class="btn btn-primary btn_submit"> 글쓰기 </button>
     </form>
 </div>
-
+<script src="{% static 'js/tweet.js' %}"></script>
 <script>
-    let user_id = document.getElementById('{{ form.user.id_for_label }}')
-    user_id.value = '{{ request.session.id}}'
+    let user_id = document.querySelector('#user_id');
+    user_id.value = `{{ request.session.id}}`
     console.log(user_id.value);
 
 </script>

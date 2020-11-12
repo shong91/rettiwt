@@ -22,10 +22,10 @@ class TwTweet(models.Model):
     # FK 가 user_id 가 아니라 user_id_id 로 잡혀서 renaming 함
     user = models.ForeignKey(TwUser, on_delete=models.CASCADE, related_name="TwUser_user_id", error_messages=None)
     tw_content = models.CharField(max_length=500, null=False)
-    image = ProcessedImageField(
+    image = models.ImageField(
         upload_to='img/',
-        processors=[ResizeToFit(width=960, upscale=False)],
-        format='JPEG',
+        # processors=[ResizeToFit(width=960, upscale=False)],
+        # format='JPEG',
         blank=True, null=True
     )
     # 공통컬럼
@@ -42,12 +42,13 @@ class TwTweet(models.Model):
 class TwImages(models.Model):
     tweet = models.ForeignKey(TwTweet, blank=False, null=False, related_name="tweet_sno", on_delete=models.CASCADE)
     # save resized version
-    image = ProcessedImageField(
-        upload_to='img/',
-        processors=[ResizeToFit(width=960, upscale=False)],
-        format='JPEG',
-        blank=True, null=True
-    )
+    image = models.ImageField(upload_to='img/', blank=True, null=True)
+    # image = models.ImageField(
+    #     upload_to='img/',
+    #     processors=[ResizeToFit(width=960, upscale=False)],
+    #     format='JPEG',
+    #     blank=True, null=True
+    # )
     # - ProcessedImageField: django-orm이 인식하는 처리된 이미지 속성. image필드와 마찬가지로, 이미지가 저장된 위치를 DB에 저장
     # - ImageSpecField: 이미 생성된 이미지의 캐시용 이미지를 생성
 

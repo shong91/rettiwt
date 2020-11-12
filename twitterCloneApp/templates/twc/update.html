@@ -4,11 +4,19 @@
 <div class="container">
     <form action="{% url 'twc:update' id=id %}" method="POST">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-            <!-- update2.html == tweet.html 같이 사용?  -->
-        </table>
-        <button type="submit" class="btn btn-primary"> 글수정 </button>
+        <input type="hidden" name="user" id="user_id" value="{{ form.user.value }}">
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1"></label>
+            <textarea name="tw_content" class="form-control tw_content" id="exampleFormControlTextarea1" rows="3" maxlength="140">{{form.tw_content.value}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlFile1"></label>
+            <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" multiple>
+            {{ image }} <!--input type file 은 readonly -->
+        </div>
+
+        <button type="button" class="btn btn-primary btn_submit"> 글수정 </button>
     </form>
 </div>
 {% endblock %}
