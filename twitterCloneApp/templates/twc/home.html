@@ -14,12 +14,6 @@
         {% if tweet.image %}
             <img src="/media/{{ tweet.image }}">
         {% endif %}
-<!--             {% for queryset in image_list %}-->
-<!--                {% for image in queryset %}-->
-<!--                    {% if tweet.id == image.tweet_id %}-->
-<!--                    {% endif %} -->
-<!--                {% endfor %}-->
-<!--            {% endfor %}-->
             <p>{{ tweet.updated_at|date:"Y-m-d" }}</p>
         {% if request.session.id == tweet.user_id %}
             <a href="{% url 'twc:update' id=tweet.id %}">

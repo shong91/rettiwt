@@ -98,7 +98,6 @@ def user_login(request):
             return render(request, 'twc/login.html', {'form': login_form, 'error': '아이디 혹은 비밀번호가 틀렸습니다. '})
 
 
-
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))

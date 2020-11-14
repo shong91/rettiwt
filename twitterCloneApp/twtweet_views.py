@@ -20,18 +20,7 @@ def get_list(request):
     # user = tweet.user # user_nm = test
 
     print('===================================================')
-    # print(tw_image_queryset.values())
-    # tw_image_list = []
-    # # <QuerySet [<TwTweet:TwTweet object(id=3)>, <>, <>, ...]> 의 형태
-    # for tweet in tw_list:
-    #     # queryset to list
-    #     tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related('tweet').all()
-    #     if len(tw_image_queryset) != 0:
-    #         tw_image_list.append(tw_image_queryset)
-    #         # print(tw_image_queryset.values())
-    #     # tw_image_queryset = TwImages.objects.filter(tweet=tweet.id).select_related().values()
-
-    return render(request, 'twc/home.html', {'list': tw_list }) #'image_list': tw_image_list
+    return render(request, 'twc/home.html', {'list': tw_list})
 
 
 def tweet(request):
