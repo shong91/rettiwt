@@ -3,23 +3,25 @@
 {% block content %}
 
 <div class="">
-    {% for  tweet in list %}
+    {% for tweet in list %}
     <div class="media">
-        <img src="user/{{tweet.user_prof_pic}}" class="mr-3 rounded-lg" alt="...">
+        <img src="/media/{{tweet.user_prof_pic}}" class="mr-3 rounded-lg" alt="...">
         <div class="media-body">
-            <h5 class="mt-0"> user_nm <span>@{{ tweet.user }}</span></h5>
-<!--            <img src="{% static 'img/image1.jpg' %}" >-->
-<!--            <img src='/static/img/{{tweet.tw_image_url}}'>-->
+            <h5 class="mt-0"> {{ tweet.user_nm }}
+                <span>@{{ tweet.user }}</span>
+            </h5>
             {{ tweet.tw_content }}
+        {% if tweet.image %}
+            <img src="/media/{{ tweet.image }}">
+        {% endif %}
 <!--             {% for queryset in image_list %}-->
 <!--                {% for image in queryset %}-->
 <!--                    {% if tweet.id == image.tweet_id %}-->
-<!--                    <img src="/media/{{ image.image }}">-->
-<!--                    {% endif %}-->
+<!--                    {% endif %} -->
 <!--                {% endfor %}-->
 <!--            {% endfor %}-->
-            <p>{{ tweet.last_chg_date|date:"Y-m-d" }}</p>
-            {% if request.session.id == tweet.user_id %}
+            <p>{{ tweet.updated_at|date:"Y-m-d" }}</p>
+        {% if request.session.id == tweet.user_id %}
             <a href="{% url 'twc:update' id=tweet.id %}">
                 <button type="submit" class="btn btn-info"> 수정하기 </button>
             </a>

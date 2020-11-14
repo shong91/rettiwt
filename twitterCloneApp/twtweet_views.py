@@ -6,9 +6,13 @@ from twitterCloneApp.forms import TwTweetForm
 
 def get_list(request):
     id = request.session.get('id')
-    print('id: ', id)
+    print('/twc/home/ id: ', id)
     # .get() 은 객체를 리턴한다
-    tw_list = TwTweet.objects.filter(user_id=id).order_by('-created_at')
+    tw_list = TwTweet.objects.filter(user_id=id).order_by('-updated_at')
+    for idx, tweet in enumerate(tw_list):
+        user = tweet.user
+        setattr(tweet, 'user_nm', user.user_nm)
+        setattr(tweet, 'user_prof_pic', user.user_prof_pic)
 
     # ref) 모델 간의 릴레이션을 이용하여 TwImages 에서 TwTweet Object 를 가져올 수 있다
     # tw_image_list = TwImages.objects.filter(tweet_id=30) # TwImages Object(2)
@@ -58,19 +62,14 @@ def update(request, id):
         return render(request, 'twc/update.html', {'form': form, 'image': image, 'id': item.id})
     elif request.method == 'POST':
         form = TwTweetForm(request.POST, request.FILES, instance=item)
-        print(form)
         if form.is_valid():
             for img in request.FILES.getlist('image'):
                 # Photo model(relation: TwTweet) 생성하여 photo.save()
-                print('in for loop')
-                print(img)
                 # item.tw_image_url = img
                 item = form.save(commit=True)
-                pass
-            # item.tw_image_url = request.POST['tw_image_url']
-            # item.save()
-            # item = form.save(commit=True)
-        return redirect('twc:home')
+                item.image = img
+                item.save()
+            return redirect('twc:home')
 
 
 def delete(request, id):

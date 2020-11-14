@@ -19,36 +19,25 @@
 </head>
 <body>
  {% if request.session.user_id %}
-    <nav class="nav2 flex-column">
-        <a class="nav-link active" href="{% url 'twc:home' %}">Home</a>
-        <a class="nav-link" href="#">Explore</a>
-        <a class="nav-link" href="#">Notifications</a>
-        <a class="nav-link" href="#">Messages</a>
-        <a class="nav-link" href="#">Bookmarks</a>
-        <a class="nav-link" href="#">Lists</a>
-        <a class="nav-link" href="{% url 'twc:profile' id=request.session.user_id %}">Profile</a>
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">More</a>
-        <a class="nav-link" href="{% url 'twc:tweet' %}"><div class="btn btn-primary">Tweet</div></a>
-        <a class="nav-link" href="{% url 'twc:logout' %}"><div class="btn btn-danger">Logout</div></a>
-
+    <nav class="nav nav-pills flex-column flex-sm-row">
+        <a class="flex-sm-fill text-sm-center nav-link active" href="{% url 'twc:home' %}"> Home </a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Explore</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Notifications</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Messages</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="#">Bookmarks</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'twc:profile' id=request.session.user_id %}">Profile</a>
+        <a class="flex-sm-fill text-sm-center nav-link disabled" href="#" tabindex="-1" aria-disabled="true">More</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'twc:tweet' %}"><div class="btn btn-primary">Tweet</div></a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="{% url 'twc:logout' %}"><div class="btn btn-danger">Logout</div></a>
     </nav>
  {% endif %}
 
-    <section class="section">
+    <section>
         {% block content %}
         {% endblock %}
     </section>
 
 
- {% if request.session.user_id %}
-    <article class="article">
-        <div>
-            today's Trend..
-            같은 것들을
-            여기에 넣어주세요.
-        </div>
-    </article>
- {% endif %}
 </body>
 
 </html>
