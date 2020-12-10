@@ -1,12 +1,28 @@
 # TwitterClone
  [Project] Twitter Clone Coding
 
+## Services
+### Front-end
+- HTML5
+- javascript (ES6)
 
-User
-- Join / Login 
+### Back-end
+- python
+- Django framework 
+
+### Database
+- SQLite 
+
+
+<br>
+
+## Features 
+### User
+- Join / Login (using Customized User)
 - Email Authentication
 - Profile Page
+- File Upload 
 
-Tweet
+### Tweet
 - Tweet CRUD
 - File Upload
