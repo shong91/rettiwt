@@ -1,5 +1,5 @@
-# TwitterClone
- [Project] Twitter Clone Coding
+# rettiwt
+ [Project] rettiwt - SNS webapp motivated by Twitter 
 
 ## Services
 ### Front-end
